@@ -44,4 +44,27 @@ public class ProdutosDAO {
         return false;
     }
 }
+    
+    public ArrayList<Object[]> listarVendas() {
+    ArrayList<Object[]> vendas = new ArrayList<>();
+    String sql = "SELECT id, nome, preco, status FROM produtos WHERE status = 'Vendido'";
+    
+    try (Connection conn = new conectaDAO().connectDB();
+         PreparedStatement prep = conn.prepareStatement(sql);
+         ResultSet rs = prep.executeQuery()) {
+
+        while (rs.next()) {
+            vendas.add(new Object[]{
+                rs.getInt("id"),
+                rs.getString("nome"),
+                rs.getDouble("preco"),
+                rs.getString("status")
+            });
+        }
+    } catch (SQLException e) {
+        System.out.println("Erro ao listar vendas: " + e.getMessage());
+    }
+    
+    return vendas;
+}
 }
