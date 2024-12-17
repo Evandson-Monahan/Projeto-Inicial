@@ -2,6 +2,8 @@ package View;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
+import DAO.ProdutosDAO;
 
 public class vendasVIEW extends JFrame {
     private JTable tabelaVendas;
@@ -37,16 +39,17 @@ public class vendasVIEW extends JFrame {
     public void listarVendas() {
         
         DefaultTableModel model = (DefaultTableModel) tabelaVendas.getModel();
-        model.setNumRows(0);
+    model.setNumRows(0); // Limpa a tabela antes de carregar novas informações
 
-        // Aqui você deve substituir por um método do DAO para buscar vendas do banco de dados
-        Object[][] vendas = {
-            { 1, "Produto A", 100.0, "Vendido" },
-            { 2, "Produto B", 200.0, "Vendido" }
-        };
+    ProdutosDAO produtosDAO = new ProdutosDAO();
+    ArrayList<Object[]> vendas = produtosDAO.listarVendas();
 
-        for (Object[] venda : vendas) {
-            model.addRow(venda);
-        }
+    for (Object[] venda : vendas) {
+        model.addRow(venda); // Adiciona cada venda na tabela
+    }
+
+    if (vendas.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Nenhuma venda encontrada.");
+    }
     }
 }
