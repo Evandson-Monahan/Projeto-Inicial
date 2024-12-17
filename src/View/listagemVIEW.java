@@ -4,6 +4,7 @@ import DTO.ProdutosDTO;
 import DAO.ProdutosDAO;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
 
 public class listagemVIEW extends javax.swing.JFrame {
 
@@ -200,6 +201,7 @@ public class listagemVIEW extends javax.swing.JFrame {
                 });
             }
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao listar produtos: " + e.getMessage());
         }
     }
 }
