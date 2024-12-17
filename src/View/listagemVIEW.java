@@ -11,6 +11,8 @@ public class listagemVIEW extends javax.swing.JFrame {
     public listagemVIEW() {
         initComponents();
         listarProdutos();
+        listarProdutos();
+        id_produto_venda.requestFocus();
     }
 
    @SuppressWarnings("unchecked")
@@ -123,17 +125,32 @@ public class listagemVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
+       try {
         String id = id_produto_venda.getText();
-        
+        if (id.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, informe o ID do produto.");
+            return;
+        }
+
         ProdutosDAO produtosdao = new ProdutosDAO();
+        boolean sucesso = produtosdao.venderProduto(Integer.parseInt(id));
         
-        //produtosdao.venderProduto(Integer.parseInt(id));
-        listarProdutos();
+        if (sucesso) {
+            JOptionPane.showMessageDialog(this, "Produto vendido com sucesso!");
+            listarProdutos();
+        } else {
+            JOptionPane.showMessageDialog(this, "Falha ao vender produto. Verifique o ID.");
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "O ID deve ser um número válido.");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Erro ao processar venda: " + e.getMessage());
+    }
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
-        //vendasVIEW vendas = new vendasVIEW(); 
-        //vendas.setVisible(true);
+        vendasVIEW vendas = new vendasVIEW(); 
+        vendas.setVisible(true);
     }//GEN-LAST:event_btnVendasActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
