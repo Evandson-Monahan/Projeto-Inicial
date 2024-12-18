@@ -20,7 +20,19 @@ public class ProdutosDAO {
     public void cadastrarProduto (ProdutosDTO produto){
         
         
-        conn = new conectaDAO().connectDB();
+        String sql = "INSERT INTO produtos (nome, valor, status) VALUES (?, ?, ?)";
+
+    try (Connection conn = new conectaDAO().connectDB();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        stmt.setString(1, produto.getNome());
+        stmt.setInt(2, produto.getValor());
+        stmt.setString(3, produto.getStatus());
+
+        stmt.executeUpdate();
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Erro ao cadastrar o produto: " + e.getMessage());
+    }
         
         
     }
@@ -28,7 +40,7 @@ public class ProdutosDAO {
     public ArrayList<ProdutosDTO> listarProdutos(){
         
         ArrayList<ProdutosDTO> produtos = new ArrayList<>();
-    String sql = "SELECT id, nome, valor, status FROM produtos";  // Ajuste conforme sua tabela no banco de dados
+    String sql = "SELECT id, nome, valor, status FROM produtos";
 
     try (Connection conn = new conectaDAO().connectDB();
          PreparedStatement stmt = conn.prepareStatement(sql);
