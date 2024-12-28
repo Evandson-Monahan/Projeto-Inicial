@@ -42,7 +42,7 @@ public class vendasVIEW extends JFrame {
     model.setNumRows(0); // Limpa a tabela antes de carregar novas informações
 
     ProdutosDAO produtosDAO = new ProdutosDAO();
-    ArrayList<Object[]> vendas = produtosDAO.listarVendas();
+    ArrayList<Object[]> vendas = produtosDAO.listarProdutosVendidos();
 
     for (Object[] venda : vendas) {
         model.addRow(venda); // Adiciona cada venda na tabela
