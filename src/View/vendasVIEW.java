@@ -3,6 +3,7 @@ package View;
 import DAO.ProdutosDAO;
 import DTO.ProdutosDTO;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class vendasVIEW extends javax.swing.JFrame {
@@ -83,7 +84,7 @@ public class vendasVIEW extends javax.swing.JFrame {
                 });
             }
         } catch (Exception e) {
-            System.out.println("Erro ao listar produtos vendidos: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao listar produtos vendidos: " + e.getMessage());
         }
     }
 

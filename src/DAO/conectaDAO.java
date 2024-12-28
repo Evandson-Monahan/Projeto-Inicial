@@ -12,11 +12,12 @@ public class conectaDAO {
         
         try {
         
-            conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/EmpresaLeiloesBD", "admin", "04abr1994");
+            conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/EmpresaLeiloesBD/Admin/04abr1994");
             
         } catch (SQLException erro){
-            JOptionPane.showMessageDialog(null, "Erro ao conectar" + erro.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ConectaDAO" + erro.getMessage());
         }
         return conn;
     }
+    
 }
