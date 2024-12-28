@@ -1,55 +1,102 @@
 package View;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.util.ArrayList;
 import DAO.ProdutosDAO;
+import DTO.ProdutosDTO;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
-public class vendasVIEW extends JFrame {
-    private JTable tabelaVendas;
-    private JButton btnVoltar;
+public class vendasVIEW extends javax.swing.JFrame {
 
     public vendasVIEW() {
-        setTitle("Vendas Realizadas");
-        setSize(600, 400);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
+        initComponents();
+        listarProdutosVendidos();
+    }
 
-        // Configuração da tabela
-        tabelaVendas = new JTable(new DefaultTableModel(
-            new Object[][] {},
-            new String[] { "ID", "Nome do Produto", "Valor", "Status" }
+    @SuppressWarnings("unchecked")
+    private void initComponents() {
+
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabelaProdutosVendidos = new javax.swing.JTable();
+        btnVoltar = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        tabelaProdutosVendidos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object[][]{},
+            new String[]{
+                "ID", "Nome", "Valor", "Status"
+            }
         ));
+        jScrollPane1.setViewportView(tabelaProdutosVendidos);
 
-        JScrollPane scrollPane = new JScrollPane(tabelaVendas);
+        btnVoltar.setText("Voltar");
+        btnVoltar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVoltarActionPerformed(evt);
+            }
+        });
 
-        // Botão Voltar
-        btnVoltar = new JButton("Voltar");
-        btnVoltar.addActionListener(e -> dispose());
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnVoltar)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnVoltar)
+                .addContainerGap())
+        );
 
-        // Layout
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.add(scrollPane);
-        panel.add(btnVoltar);
-
-        add(panel);
+        pack();
     }
 
-    public void listarVendas() {
-        
-        DefaultTableModel model = (DefaultTableModel) tabelaVendas.getModel();
-    model.setNumRows(0); // Limpa a tabela antes de carregar novas informações
-
-    ProdutosDAO produtosDAO = new ProdutosDAO();
-    ArrayList<Object[]> vendas = produtosDAO.listarVendas();
-
-    for (Object[] venda : vendas) {
-        model.addRow(venda); // Adiciona cada venda na tabela
+    private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {
+        this.dispose();
     }
 
-    if (vendas.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Nenhuma venda encontrada.");
+    private void listarProdutosVendidos() {
+        try {
+            ProdutosDAO produtosdao = new ProdutosDAO();
+            ArrayList<ProdutosDTO> listagem = produtosdao.listarProdutosVendidos();
+
+            DefaultTableModel model = (DefaultTableModel) tabelaProdutosVendidos.getModel();
+            model.setNumRows(0);
+
+            for (ProdutosDTO produto : listagem) {
+                model.addRow(new Object[]{
+                    produto.getId(),
+                    produto.getNome(),
+                    produto.getValor(),
+                    produto.getStatus()
+                });
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao listar produtos vendidos: " + e.getMessage());
+        }
     }
+
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new vendasVIEW().setVisible(true);
+            }
+        });
     }
+
+    private javax.swing.JButton btnVoltar;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tabelaProdutosVendidos;
 }
