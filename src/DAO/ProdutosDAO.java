@@ -14,9 +14,15 @@ public class ProdutosDAO {
     PreparedStatement pstm;
     ResultSet rs;
     ArrayList<ProdutosDTO> lista = new ArrayList<>();
+    public ProdutosDAO(){
+        this.conn = new conectaDAO().connectDB();
+    }
     
     public void cadastrarProduto (ProdutosDTO produto){
-        
+        if (this.conn == null){
+            JOptionPane.showMessageDialog(null, "Conexão com o banco de dados não foi estabelecida");
+            return;
+        }
         
         String sql = "INSERT INTO produtos (nome, valor, status) VALUES (?, ?, ?)";
 
